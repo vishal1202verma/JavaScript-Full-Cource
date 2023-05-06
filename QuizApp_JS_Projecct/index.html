@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="./Script.js"></script> -->
+</head>
+<body>
+    <h1>
+        JavaScript Quiz App
+    </h1>
+    <div id="quiz"></div>
+
+    <button id="submit">Submit</button>
+
+    <div id="results"></div>
+
+<script>
+
+  const quizContainer = document.getElementById('quiz');
+  const SubmitButtton = document.getElementById('submit');
+  const resultsContainer = document.getElementById('results');
+
+  const myQuestions  = [
+     {
+        question: "what is the capital of France?",
+        answers:{
+            a:"Paris",
+            b:"London",
+            c:"New York"
+        },
+        correctAnswer: "a"
+     },
+     {
+        question: "what is the largest country in the world?",
+        answers:{
+            a:"Russia",
+            b:"China",
+            c:"United States"
+        },
+        correctAnswer: "a"
+     },
+
+     {
+        question: "what is the currency of Japan?",
+        answers:{
+            a:"Yuan",
+            b:"Euro",
+            c:"Yen"
+        },
+        correctAnswer: "c"
+     }
+    
+  ];
+
+  function buildquiz(){
+    const output = []
+    myQuestions.forEach((currentquestion, questionNumber) =>{
+
+        const answers = []
+        for( letter in currentquestion.answers){
+            answers.push(
+                `<label> <input type = "radio" name= "question${questionNumber}" value"${letter}" />
+                ${letter}:${currentquestion.answers[letter]}</label>`)
+        }
+        // console.log(answers);
+        output.push(
+            `<div class = "question">${currentquestion.question}</div>
+            <div class = "answers">${answers.join('')}</div>`
+            )
+            
+    })
+        // console.log(output);
+    
+      quizContainer.innerHTML = output.join('');
+  }
+
+  function showResults (){
+    const answerContainer =  quizContainer.querySelectorAll('.answers')
+    let numcorrect = 0;
+
+    myQuestions.forEach((currentquestion, questionNumber) =>{
+        //find selected answers 
+       const answerContainer=  answerContainers[questionNumber]
+    //    input[name = question1]:checked
+       const selector = `input[name=question${questionNumber}]:checked`;
+       const userAnswer = (answerContainer.querySelector(selector) || {}).value 
+       
+       if(userAnswer === currentquestion.correctAnswer){
+        numcorrect++
+        answerContainers[questionNumber].style.color = 'green'
+       }else{
+        answerContainers[questionNumber].style.color = 'red'
+       }
+    })
+
+    resultsContainer.innerHTML = `${numcorrect} out of ${myQuestions.length}`
+  }
+
+  buildquiz();
+
+  SubmitButtton.addEventListener('click', showResults);
+
+</script>
+
+</body>
+</html>
